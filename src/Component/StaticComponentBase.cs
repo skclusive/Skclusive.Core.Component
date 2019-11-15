@@ -12,7 +12,7 @@ namespace Skclusive.Core.Component
         protected bool _hasNeverRendered = true;
 
         /// <summary>
-        /// Constructs an instance of <see cref="PureComponent"/>.
+        /// Constructs an instance of <see cref="PureComponentBase"/>.
         /// </summary>
         public StaticComponentBase()
         {
@@ -29,7 +29,7 @@ namespace Skclusive.Core.Component
 
         void IComponent.Attach(RenderHandle renderHandle)
         {
-            // This implicitly means a PureComponent can only be associated with a single
+            // This implicitly means a PureComponentBase can only be associated with a single
             // renderer. That's the only use case we have right now. If there was ever a need,
             // a component could hold a collection of render handles.
             if (_renderHandle.IsInitialized)

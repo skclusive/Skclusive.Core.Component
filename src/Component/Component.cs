@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace Skclusive.Core.Component
 {
-    public class Component : EventComponent
+    public class Component : EventComponentBase
     {
         [Parameter]
         public string Tag { set; get; } = "div";

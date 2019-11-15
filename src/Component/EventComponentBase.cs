@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Skclusive.Core.Component
 {
-    public class EventComponent : CssComponent
+    public class EventComponentBase : CssComponentBase
     {
-        public EventComponent(string selector = "") : base(selector)
+        public EventComponentBase(string selector = "") : base(selector)
         {
         }
 

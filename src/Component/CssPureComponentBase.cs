@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Skclusive.Core.Component
 {
-    public class CssPureComponent : PureComponent
+    public class CssPureComponentBase : PureComponentBase
     {
         public virtual string Selector { get; set; }
 
@@ -32,7 +32,7 @@ namespace Skclusive.Core.Component
         [Parameter(CaptureUnmatchedValues = true)]
         public Dictionary<string, object> Attributes { get; set; }
 
-        public CssPureComponent(string selector = "")
+        public CssPureComponentBase(string selector = "")
         {
             Stamp = GetType().Name + "_" + Guid.NewGuid().ToString();
 

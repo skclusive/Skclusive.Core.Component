@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Skclusive.Core.Component
 {
-    public class DisposableComponent : RenderComponent, IDisposable
+    public class DisposableComponentBase : RenderComponentBase, IDisposable
     {
         private List<IDisposable> Disposables { get; set; } = new List<IDisposable>();
 
