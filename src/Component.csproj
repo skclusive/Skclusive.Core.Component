@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionPrefix>1.0.2</VersionPrefix>
     <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RazorLangVersion>3.0</RazorLangVersion>
@@ -10,6 +10,10 @@
     <RootNamespace>Skclusive.Core.Component</RootNamespace>
     <Authors>Skclusive</Authors>
     <Company>Skclusive</Company>
+    <Copyright>Skclusive</Copyright>
+    <PackageTags>blazor core components</PackageTags>
+    <PackageProjectUrl>https://github.com/skclusive/Skclusive.Core.Component</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/skclusive/Skclusive.Core.Component</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
