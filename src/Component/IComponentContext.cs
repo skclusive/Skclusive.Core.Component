@@ -7,6 +7,8 @@
         string Class { get; }
 
         string Style { get; }
+
+        IReference RefBack { get; }
     }
 
     public abstract class ComponentContextBuilder<B, C>
@@ -20,6 +22,8 @@
             public string Class { get; internal set; }
 
             public string Style { get; internal set; }
+
+            public IReference RefBack { get; internal set; }
         }
 
         protected virtual ComponentContext Context { get; }
@@ -56,11 +60,19 @@
             return This();
         }
 
+        public B WithRefBack(IReference refBack)
+        {
+            Context.RefBack = refBack;
+
+            return This();
+        }
+
         public B With(IComponentContext context)
         {
             WithDisabled(context.Disabled);
             WithClass(context.Class);
             WithStyle(context.Style);
+            WithRefBack(context.RefBack);
 
             return This();
         }

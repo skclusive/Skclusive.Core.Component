@@ -14,17 +14,22 @@ namespace Skclusive.Core.Component
         public bool? NoWrap { set; get; }
 
         [Parameter]
+        public IReference RootRef { set; get; } = new Reference();
+
+        [Parameter]
+        public IReference ChildRef { set; get; } = new Reference();
+
+        [Parameter]
         public RenderFragment<IComponentContext> ChildContent { get; set; }
 
         #region From BlazorComponent https://github.com/aspnet/Blazor/blob/5a50ce2e8f2332d7431d62509bfc439915dac8c9/src/Microsoft.AspNetCore.Blazor/Components/BlazorComponent.cs
-
-        public ElementReference ElementRef { set; get; }
 
         #endregion
 
         protected IComponentContext Context => new ComponentContextBuilder()
             .WithClass(Class)
             .WithStyle(Style)
+            .WithRefBack(ChildRef)
             .WithDisabled(Disabled)
             .Build();
 
@@ -147,7 +152,7 @@ namespace Skclusive.Core.Component
                 builder.AddContent(27, ChildContent(Context));
 
             builder.AddElementReferenceCapture(28, (__value) => {
-                ElementRef = (ElementReference)__value;
+                RootRef.Current = (ElementReference)__value;
             });
 
             builder.CloseElement();
