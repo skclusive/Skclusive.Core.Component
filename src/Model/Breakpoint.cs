@@ -10,6 +10,8 @@
 
         Large,
 
-        ExtraLarge
+        ExtraLarge,
+
+        None
     }
 }

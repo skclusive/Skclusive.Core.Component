@@ -1,11 +1,13 @@
-﻿using System;
-
-namespace Skclusive.Core.Component
+﻿namespace Skclusive.Core.Component
 {
-    public class Position
+    public enum Position
     {
-        public int? X { set; get; }
+         Left,
 
-        public int? Y { set; get; }
+        Top,
+
+        Bottom,
+
+        Right
     }
 }

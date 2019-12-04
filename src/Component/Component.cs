@@ -27,8 +27,8 @@ namespace Skclusive.Core.Component
         #endregion
 
         protected IComponentContext Context => new ComponentContextBuilder()
-            .WithClass(Class)
-            .WithStyle(Style)
+            // .WithClass(Class)
+            // .WithStyle(Style)
             .WithRefBack(ChildRef)
             .WithDisabled(Disabled)
             .Build();
