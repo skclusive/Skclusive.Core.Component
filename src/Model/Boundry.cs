@@ -2,12 +2,12 @@
 {
     public class Boundry
     {
-        public int Left { set; get; }
+        public double Left { set; get; }
 
-        public int Top { set; get; }
+        public double Top { set; get; }
 
-        public int Width { set; get; }
+        public double Width { set; get; }
 
-        public int Height { set; get; }
+        public double Height { set; get; }
     }
 }

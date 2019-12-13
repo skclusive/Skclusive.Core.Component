@@ -2,8 +2,8 @@
 {
     public class Point
     {
-        public int? X { set; get; }
+        public double? X { set; get; }
 
-        public int? Y { set; get; }
+        public double? Y { set; get; }
     }
 }

@@ -2,11 +2,11 @@
 {
     public enum Position
     {
-         Left,
+        Left,
 
-        Top,
+        Up,
 
-        Bottom,
+        Down,
 
         Right
     }
