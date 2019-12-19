@@ -40,10 +40,17 @@ namespace Skclusive.Core.Component
         }
         private void GenericTimerCallback(object sender, System.Timers.ElapsedEventArgs e)
         {
-            context.Post(delegate
+            if (context != null)
+            {
+                context.Post(delegate
+                {
+                    planAction();
+                }, null);
+            }
+            else
             {
                 planAction();
-            }, null);
+            }
 
             if (!isRepeatedPlan)
             {
