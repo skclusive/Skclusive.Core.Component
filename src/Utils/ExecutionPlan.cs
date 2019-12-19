@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Timers;
+using System.Threading;
+using Timer = System.Timers.Timer;
 
 namespace Skclusive.Core.Component
 {
@@ -11,8 +12,12 @@ namespace Skclusive.Core.Component
 
         private readonly bool isRepeatedPlan;
 
+        private SynchronizationContext context;
+
         private ExecutionPlan(int millisecondsDelay, Action planAction, bool isRepeatedPlan)
         {
+            context = SynchronizationContext.Current;
+
             planTimer = new Timer(millisecondsDelay);
 
             planTimer.Elapsed += GenericTimerCallback;
@@ -35,7 +40,11 @@ namespace Skclusive.Core.Component
         }
         private void GenericTimerCallback(object sender, System.Timers.ElapsedEventArgs e)
         {
-            planAction();
+            context.Post(delegate
+            {
+                planAction();
+            }, null);
+
             if (!isRepeatedPlan)
             {
                 Abort();
@@ -55,6 +64,7 @@ namespace Skclusive.Core.Component
                 Abort();
                 planTimer.Dispose();
                 planTimer = null;
+                context = null;
             }
             else
             {
