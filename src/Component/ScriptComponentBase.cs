@@ -7,7 +7,7 @@ namespace Skclusive.Core.Component
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
             builder.OpenElement(0, "script");
-            builder.AddMarkupContent(1, GetScript());
+            builder.AddContent(1, GetScript());
             builder.CloseElement();
         }
 
