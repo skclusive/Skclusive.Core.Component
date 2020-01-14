@@ -53,7 +53,7 @@ namespace Skclusive.Core.Component
         protected virtual void OnAfterRender(bool firstRender)
         {
         }
-      
+
         Task IHandleEvent.HandleEventAsync(EventCallbackWorkItem callback, object arg)
         {
             return callback.InvokeAsync(arg);

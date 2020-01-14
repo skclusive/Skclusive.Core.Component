@@ -6,6 +6,15 @@ namespace Skclusive.Core.Component
 {
     public class CssUtil
     {
+        public static IEnumerable<Tuple<string, object>> ToStyles(string style)
+        {
+            if (string.IsNullOrWhiteSpace(style))
+            return Enumerable.Empty<Tuple<string, object>>();
+
+            return style.Split(";").Select(single => single.Split(":"))
+            .Select(pair => Tuple.Create<string, object>(pair[0], pair[1]));
+        }
+
         public static string ToStyle(IEnumerable<Tuple<string, object>> styles, string style = "")
         {
             var _style = string.Join(";", styles
