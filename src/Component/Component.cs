@@ -7,22 +7,41 @@ namespace Skclusive.Core.Component
 {
     public class Component : EventComponentBase
     {
+        /// <summary>
+        /// html tag used for the root node.
+        /// </summary>
         [Parameter]
         public string Tag { set; get; } = "div";
 
+        /// <summary>
+        /// If `true`, the text will not wrap, but instead will truncate with a text overflow ellipsis.
+        /// <remarks>
+        /// Note that text overflow can only happen with block or inline-block level elements
+        /// (the element needs to have a width in order to overflow).
+        /// </remarks>
+        /// </summary>
         [Parameter]
         public bool? NoWrap { set; get; }
 
+        /// <summary>
+        /// Reference attached to the root element of the component.
+        /// </summary>
         [Parameter]
         public IReference RootRef { set; get; } = new Reference();
 
+        /// <summary>
+        /// Reference attached to the child element of the component.
+        /// </summary>
         [Parameter]
         public IReference ChildRef { set; get; } = new Reference();
 
+        /// <summary>
+        /// ChildContent of the current component which gets component <see cref="IComponentContext" />.
+        /// </summary>
         [Parameter]
         public RenderFragment<IComponentContext> ChildContent { get; set; }
 
-        #region From BlazorComponent https://github.com/aspnet/Blazor/blob/5a50ce2e8f2332d7431d62509bfc439915dac8c9/src/Microsoft.AspNetCore.Blazor/Components/BlazorComponent.cs
+        #region From BlazorComponent https://github.com/aspnet/Blazor/blob/5a50ce2e8f2332d7431d62509bfc439915dac8c9/src/Microsoft.AspNetCore.Components.WebAssembly/Components/BlazorComponent.cs
 
         #endregion
 
@@ -103,55 +122,58 @@ namespace Skclusive.Core.Component
             if (OnMouseUp.HasDelegate)
                 builder.AddAttribute(11, "onmouseup", EventCallback.Factory.Create<MouseEventArgs>(this, HandleMouseUpAsync));
 
+            if (OnMouseEnter.HasDelegate)
+                builder.AddAttribute(12, "onmouseenter", EventCallback.Factory.Create<EventArgs>(this, HandleMouseEnterAsync));
+
             if (OnMouseLeave.HasDelegate)
-                builder.AddAttribute(12, "onmouseleave", EventCallback.Factory.Create<EventArgs>(this, HandleMouseLeaveAsync));
+                builder.AddAttribute(13, "onmouseleave", EventCallback.Factory.Create<EventArgs>(this, HandleMouseLeaveAsync));
 
             if (OnTouchStart.HasDelegate)
-                builder.AddAttribute(13, "ontouchstart", EventCallback.Factory.Create<TouchEventArgs>(this, HandleTouchStartAsync));
+                builder.AddAttribute(14, "ontouchstart", EventCallback.Factory.Create<TouchEventArgs>(this, HandleTouchStartAsync));
 
             if (OnTouchMove.HasDelegate)
-                builder.AddAttribute(14, "ontouchmove", EventCallback.Factory.Create<TouchEventArgs>(this, HandleTouchMoveAsync));
+                builder.AddAttribute(15, "ontouchmove", EventCallback.Factory.Create<TouchEventArgs>(this, HandleTouchMoveAsync));
 
             if (OnTouchEnd.HasDelegate)
-                builder.AddAttribute(15, "ontouchend", EventCallback.Factory.Create<TouchEventArgs>(this, HandleTouchEndAsync));
+                builder.AddAttribute(16, "ontouchend", EventCallback.Factory.Create<TouchEventArgs>(this, HandleTouchEndAsync));
 
             if (OnClick.HasDelegate)
-                builder.AddAttribute(16, "onclick", EventCallback.Factory.Create<EventArgs>(this, HandleClickAsync));
+                builder.AddAttribute(17, "onclick", EventCallback.Factory.Create<EventArgs>(this, HandleClickAsync));
 
             if(OnDrag.HasDelegate)
-                builder.AddAttribute(17, "ondrag", EventCallback.Factory.Create<DragEventArgs>(this, HandleDragAsync));
+                builder.AddAttribute(18, "ondrag", EventCallback.Factory.Create<DragEventArgs>(this, HandleDragAsync));
 
             if (OnDrop.HasDelegate)
-                builder.AddAttribute(18, "ondrop", EventCallback.Factory.Create<DragEventArgs>(this, HandleDropAsync));
+                builder.AddAttribute(19, "ondrop", EventCallback.Factory.Create<DragEventArgs>(this, HandleDropAsync));
 
             if (OnDragStart.HasDelegate)
-                builder.AddAttribute(19, "ondragstart", EventCallback.Factory.Create<DragEventArgs>(this, HandleDragStartAsync));
+                builder.AddAttribute(20, "ondragstart", EventCallback.Factory.Create<DragEventArgs>(this, HandleDragStartAsync));
 
             if (OnDragEnd.HasDelegate)
-                builder.AddAttribute(20, "ondragend", EventCallback.Factory.Create<DragEventArgs>(this, HandleDragEndAsync));
+                builder.AddAttribute(21, "ondragend", EventCallback.Factory.Create<DragEventArgs>(this, HandleDragEndAsync));
 
             if (OnDragEnter.HasDelegate)
-                builder.AddAttribute(21, "ondragenter", EventCallback.Factory.Create<DragEventArgs>(this, HandleDragEnterAsync));
+                builder.AddAttribute(22, "ondragenter", EventCallback.Factory.Create<DragEventArgs>(this, HandleDragEnterAsync));
 
             if (OnDragExit.HasDelegate)
-                builder.AddAttribute(22, "ondragexit", EventCallback.Factory.Create<DragEventArgs>(this, HandleDragExitAsync));
+                builder.AddAttribute(23, "ondragexit", EventCallback.Factory.Create<DragEventArgs>(this, HandleDragExitAsync));
 
             if (OnDragOver.HasDelegate)
-                builder.AddAttribute(23, "ondragover", EventCallback.Factory.Create<DragEventArgs>(this, HandleDragOverAsync));
+                builder.AddAttribute(24, "ondragover", EventCallback.Factory.Create<DragEventArgs>(this, HandleDragOverAsync));
 
             if (OnDragLeave.HasDelegate)
-                builder.AddAttribute(24, "ondragleave", EventCallback.Factory.Create<DragEventArgs>(this, HandleDragLeaveAsync));
+                builder.AddAttribute(25, "ondragleave", EventCallback.Factory.Create<DragEventArgs>(this, HandleDragLeaveAsync));
 
             if (!string.IsNullOrWhiteSpace(Role))
-                builder.AddAttribute(25, "role", Role);
+                builder.AddAttribute(26, "role", Role);
 
             if (Disabled.HasValue)
-                builder.AddAttribute(26, "disabled", Disabled.Value);
+                builder.AddAttribute(27, "disabled", Disabled.Value);
 
             if (ChildContent != null)
-                builder.AddContent(27, ChildContent(Context));
+                builder.AddContent(28, ChildContent(Context));
 
-            builder.AddElementReferenceCapture(28, (__value) => {
+            builder.AddElementReferenceCapture(29, (__value) => {
                 RootRef.Current = (ElementReference)__value;
             });
 

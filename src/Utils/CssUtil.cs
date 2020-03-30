@@ -36,6 +36,13 @@ namespace Skclusive.Core.Component
 
         public static string ToClass(string selector, IEnumerable<string> classes, string suffix = "")
         {
+            return ToClass(selector, null, classes, suffix);
+        }
+
+        public static string ToClass(string selector, string extendor, IEnumerable<string> classes, string suffix = "")
+        {
+            var extending = !string.IsNullOrWhiteSpace(extendor);
+
             var _class = string.Join(" ", classes.Select(key =>
             {
                 if (key.StartsWith("~", StringComparison.Ordinal))
@@ -43,7 +50,16 @@ namespace Skclusive.Core.Component
                     return key.Substring(1);
                 }
 
-                return $"{selector}{(key.Length > 0 ? "-" : "")}{key}";
+                var currentKey = $"{(key.Length > 0 ? "-" : "")}{key}";
+
+                var current = $"{selector}{currentKey}";
+
+                if (extending)
+                {
+                    current = $"{current} {extendor}{currentKey}";
+                }
+
+                return current;
             }));
 
             if (!string.IsNullOrWhiteSpace(suffix))

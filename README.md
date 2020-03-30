@@ -9,4 +9,4 @@ Add a reference to the library from [![NuGet](https://img.shields.io/nuget/v/Skc
 
 ## License
 
-Skclusive.Material.Component is licensed under [MIT license](http://www.opensource.org/licenses/mit-license.php)
+Skclusive.Core.Component is licensed under [MIT license](http://www.opensource.org/licenses/mit-license.php)

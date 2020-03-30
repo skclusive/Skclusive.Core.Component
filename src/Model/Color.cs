@@ -20,6 +20,8 @@
 
         Action,
 
-        Disabled
+        Disabled,
+
+        Custom
     }
 }

@@ -2,12 +2,24 @@
 {
     public interface IComponentContext
     {
+        /// <summary>
+        /// html <c>disabled</c> attribute used for the context node.
+        /// </summary>
         bool? Disabled { get; }
 
+        /// <summary>
+        /// html <c>class</c> attribute used for the context node.
+        /// </summary>
         string Class { get; }
 
+        /// <summary>
+        /// html <c>style</c> attribute used for the context node.
+        /// </summary>
         string Style { get; }
 
+        /// <summary>
+        /// Back Reference used for the context node.
+        /// </summary>
         IReference RefBack { get; }
     }
 

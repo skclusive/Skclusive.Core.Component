@@ -40,7 +40,7 @@ namespace Skclusive.Core.Component
             _renderHandle = renderHandle;
         }
 
-        public Task SetParametersAsync(ParameterView parameters)
+        public virtual Task SetParametersAsync(ParameterView parameters)
         {
             parameters.SetParameterProperties(this);
             if (_hasNeverRendered)

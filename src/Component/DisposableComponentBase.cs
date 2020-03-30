@@ -62,9 +62,11 @@ namespace Skclusive.Core.Component
             }
         }
 
-        protected void AddDisposal(IDisposable disposable)
+        protected IDisposable AddDisposal(IDisposable disposable)
         {
             Disposables.Add(disposable);
+
+            return disposable;
         }
 
         protected virtual void Dispose()
@@ -98,9 +100,14 @@ namespace Skclusive.Core.Component
             Dispose();
         }
 
-        protected void RunTimeout(Action action, int delay)
+        protected IDisposable RunTimeout(Action action, int delay)
         {
-            AddDisposal(SetTimeout(action, delay));
+            return AddDisposal(SetTimeout(action, delay));
+        }
+
+        protected IDisposable RunInterval(Action action, int interval)
+        {
+            return AddDisposal(SetInterval(action, interval));
         }
 
         public static IDisposable SetTimeout(Action action, int delay = 0)
@@ -113,6 +120,11 @@ namespace Skclusive.Core.Component
             }
 
             return ExecutionPlan.Delay(delay, action);
+        }
+
+        public static IDisposable SetInterval(Action action, int interval)
+        {
+            return ExecutionPlan.Repeat(interval, action);
         }
 
         public static IExecutor CreateTimeout(Action action, int delay = 0)

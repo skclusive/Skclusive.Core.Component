@@ -13,60 +13,123 @@ namespace Skclusive.Core.Component
         {
         }
 
+        /// <summary>
+        /// onfocus event handler
+        /// </summary>
         [Parameter]
         public EventCallback<FocusEventArgs> OnFocus { set; get; }
 
+        /// <summary>
+        /// onblur event handler
+        /// </summary>
         [Parameter]
         public EventCallback<FocusEventArgs> OnBlur { set; get; }
 
+        /// <summary>
+        /// onclick event handler
+        /// </summary>
         [Parameter]
         public EventCallback<EventArgs> OnClick { set; get; }
 
+        /// <summary>
+        /// ondrag event handler
+        /// </summary>
         [Parameter]
         public EventCallback<DragEventArgs> OnDrag { set; get; }
 
+        /// <summary>
+        /// ondrop event handler
+        /// </summary>
         [Parameter]
         public EventCallback<DragEventArgs> OnDrop { set; get; }
 
+        /// <summary>
+        /// ondragstart event handler
+        /// </summary>
         [Parameter]
         public EventCallback<DragEventArgs> OnDragStart { set; get; }
 
+        /// <summary>
+        /// ondragend event handler
+        /// </summary>
         [Parameter]
         public EventCallback<DragEventArgs> OnDragEnd { set; get; }
 
+        /// <summary>
+        /// ondragenter event handler
+        /// </summary>
         [Parameter]
         public EventCallback<DragEventArgs> OnDragEnter { set; get; }
 
+        /// <summary>
+        /// ondragexit event handler
+        /// </summary>
         [Parameter]
         public EventCallback<DragEventArgs> OnDragExit { set; get; }
 
+        /// <summary>
+        /// ondragover event handler
+        /// </summary>
         [Parameter]
         public EventCallback<DragEventArgs> OnDragOver { set; get; }
 
+        /// <summary>
+        /// ondragleave event handler
+        /// </summary>
         [Parameter]
         public EventCallback<DragEventArgs> OnDragLeave { set; get; }
 
+        /// <summary>
+        /// onkeydown event handler
+        /// </summary>
         [Parameter]
         public EventCallback<KeyboardEventArgs> OnKeyDown { set; get; }
 
+        /// <summary>
+        /// onkeyup event handler
+        /// </summary>
         [Parameter]
         public EventCallback<KeyboardEventArgs> OnKeyUp { set; get; }
 
+        /// <summary>
+        /// onmousedown event handler
+        /// </summary>
         [Parameter]
         public EventCallback<MouseEventArgs> OnMouseDown { set; get; }
 
+        /// <summary>
+        /// onmouseup event handler
+        /// </summary>
         [Parameter]
         public EventCallback<MouseEventArgs> OnMouseUp { set; get; }
 
+        /// <summary>
+        /// onmouseenter event handler
+        /// </summary>
+        [Parameter]
+        public EventCallback<EventArgs> OnMouseEnter { set; get; }
+
+        /// <summary>
+        /// oonmouseleave event handler
+        /// </summary>
         [Parameter]
         public EventCallback<EventArgs> OnMouseLeave { set; get; }
 
+        /// <summary>
+        /// ontouchstart event handler
+        /// </summary>
         [Parameter]
         public EventCallback<TouchEventArgs> OnTouchStart { set; get; }
 
+        /// <summary>
+        /// ontouchend event handler
+        /// </summary>
         [Parameter]
         public EventCallback<TouchEventArgs> OnTouchEnd { set; get; }
 
+        /// <summary>
+        /// ontouchmove event handler
+        /// </summary>
         [Parameter]
         public EventCallback<TouchEventArgs> OnTouchMove { set; get; }
 
@@ -138,6 +201,18 @@ namespace Skclusive.Core.Component
         protected virtual Task HandleMouseUpAsync(MouseEventArgs args)
         {
             HandleMouseUp(args);
+
+            return Task.CompletedTask;
+        }
+
+        protected virtual void HandleMouseEnter(EventArgs args)
+        {
+            OnMouseEnter.InvokeAsync(args);
+        }
+
+        protected virtual Task HandleMouseEnterAsync(EventArgs args)
+        {
+            HandleMouseEnter(args);
 
             return Task.CompletedTask;
         }

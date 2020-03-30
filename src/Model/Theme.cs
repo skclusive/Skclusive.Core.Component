@@ -6,6 +6,8 @@
 
         Dark,
 
+        Auto,
+
         None
     }
 }
