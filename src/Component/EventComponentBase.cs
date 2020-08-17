@@ -119,13 +119,13 @@ namespace Skclusive.Core.Component
         /// onmouseenter event handler
         /// </summary>
         [Parameter]
-        public EventCallback<MouseEventArgs> OnMouseEnter { set; get; }
+        public EventCallback<EventArgs> OnMouseEnter { set; get; }
 
         /// <summary>
-        /// oonmouseleave event handler
+        /// onmouseleave event handler
         /// </summary>
         [Parameter]
-        public EventCallback<MouseEventArgs> OnMouseLeave { set; get; }
+        public EventCallback<EventArgs> OnMouseLeave { set; get; }
 
         /// <summary>
         /// onmouseover event handler
@@ -224,22 +224,22 @@ namespace Skclusive.Core.Component
             await HandleMouseUp(args);
         }
 
-        protected virtual Task HandleMouseEnter(MouseEventArgs args)
+        protected virtual Task HandleMouseEnter(EventArgs args)
         {
             return OnMouseEnter.InvokeAsync(args);
         }
 
-        protected virtual async Task HandleMouseEnterAsync(MouseEventArgs args)
+        protected virtual async Task HandleMouseEnterAsync(EventArgs args)
         {
             await HandleMouseEnter(args);
         }
 
-        protected virtual Task HandleMouseLeave(MouseEventArgs args)
+        protected virtual Task HandleMouseLeave(EventArgs args)
         {
             return OnMouseLeave.InvokeAsync(args);
         }
 
-        protected virtual async Task HandleMouseLeaveAsync(MouseEventArgs args)
+        protected virtual async Task HandleMouseLeaveAsync(EventArgs args)
         {
             await HandleMouseLeave(args);
         }

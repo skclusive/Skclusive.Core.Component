@@ -104,10 +104,10 @@ namespace Skclusive.Core.Component
                 builder.AddAttribute(11, "onmouseup", EventCallback.Factory.Create<MouseEventArgs>(this, HandleMouseUpAsync));
 
             if (OnMouseEnter.HasDelegate)
-                builder.AddAttribute(12, "onmouseenter", EventCallback.Factory.Create<MouseEventArgs>(this, HandleMouseEnterAsync));
+                builder.AddAttribute(12, "onmouseenter", EventCallback.Factory.Create<EventArgs>(this, HandleMouseEnterAsync));
 
             if (OnMouseLeave.HasDelegate)
-                builder.AddAttribute(13, "onmouseleave", EventCallback.Factory.Create<MouseEventArgs>(this, HandleMouseLeaveAsync));
+                builder.AddAttribute(13, "onmouseleave", EventCallback.Factory.Create<EventArgs>(this, HandleMouseLeaveAsync));
 
             if (OnMouseOver.HasDelegate)
                 builder.AddAttribute(14, "onmouseover", EventCallback.Factory.Create<MouseEventArgs>(this, HandleMouseOverAsync));
