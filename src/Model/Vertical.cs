@@ -4,6 +4,8 @@
     {
         Bottom,
 
+        Middle,
+
         Top
     }
 }

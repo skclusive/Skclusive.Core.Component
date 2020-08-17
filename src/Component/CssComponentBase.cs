@@ -97,13 +97,18 @@ namespace Skclusive.Core.Component
             get => CssUtil.ToClass(Selector, Overridable, Classes, Class);
         }
 
+        protected virtual string GetRootName()
+        {
+            return "Root";
+        }
+
         protected virtual IEnumerable<string> Classes
         {
             get
             {
                 if (!string.IsNullOrWhiteSpace(Selector))
                 {
-                    yield return "Root";
+                    yield return GetRootName();
 
                     if (Disabled.HasValue && Disabled.Value)
                         yield return nameof(Disabled);

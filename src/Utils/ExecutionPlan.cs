@@ -54,7 +54,10 @@ namespace Skclusive.Core.Component
 
             if (!isRepeatedPlan)
             {
-                Abort();
+                if (planTimer != null)
+                {
+                    Abort();
+                }
             }
         }
 

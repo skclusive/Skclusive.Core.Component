@@ -1,10 +1,12 @@
 ﻿namespace Skclusive.Core.Component
 {
-    public enum Horizontal
+    public enum Transform
     {
         Left,
 
-        Middle,
+        Top,
+
+        Down,
 
         Right
     }

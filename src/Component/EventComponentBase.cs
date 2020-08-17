@@ -31,6 +31,12 @@ namespace Skclusive.Core.Component
         [Parameter]
         public EventCallback<EventArgs> OnClick { set; get; }
 
+        [Parameter]
+        public bool? OnClickStop { set; get; }
+
+        [Parameter]
+        public bool? OnClickPrevent { set; get; }
+
         /// <summary>
         /// ondrag event handler
         /// </summary>
@@ -91,6 +97,12 @@ namespace Skclusive.Core.Component
         [Parameter]
         public EventCallback<KeyboardEventArgs> OnKeyUp { set; get; }
 
+        [Parameter]
+        public bool? OnKeyUpStop { set; get; }
+
+        [Parameter]
+        public bool? OnKeyUpPrevent { set; get; }
+
         /// <summary>
         /// onmousedown event handler
         /// </summary>
@@ -107,13 +119,32 @@ namespace Skclusive.Core.Component
         /// onmouseenter event handler
         /// </summary>
         [Parameter]
-        public EventCallback<EventArgs> OnMouseEnter { set; get; }
+        public EventCallback<MouseEventArgs> OnMouseEnter { set; get; }
 
         /// <summary>
         /// oonmouseleave event handler
         /// </summary>
         [Parameter]
-        public EventCallback<EventArgs> OnMouseLeave { set; get; }
+        public EventCallback<MouseEventArgs> OnMouseLeave { set; get; }
+
+        /// <summary>
+        /// onmouseover event handler
+        /// </summary>
+        [Parameter]
+        public EventCallback<MouseEventArgs> OnMouseOver { set; get; }
+
+        /// <summary>
+        /// onmouseout event handler
+        /// </summary>
+        [Parameter]
+        public EventCallback<MouseEventArgs> OnMouseOut { set; get; }
+
+
+        /// <summary>
+        /// onmousemove event handler
+        /// </summary>
+        [Parameter]
+        public EventCallback<MouseEventArgs> OnMouseMove { set; get; }
 
         /// <summary>
         /// ontouchstart event handler
@@ -133,244 +164,219 @@ namespace Skclusive.Core.Component
         [Parameter]
         public EventCallback<TouchEventArgs> OnTouchMove { set; get; }
 
-        protected virtual void HandleFocus(FocusEventArgs args)
+        protected virtual Task HandleFocus(FocusEventArgs args)
         {
-            OnFocus.InvokeAsync(args);
+            return OnFocus.InvokeAsync(args);
         }
 
-        protected virtual Task HandleFocusAsync(FocusEventArgs args)
+        protected virtual async Task HandleFocusAsync(FocusEventArgs args)
         {
-            HandleFocus(args);
-
-            return Task.CompletedTask;
+            await HandleFocus(args);
         }
 
-        protected virtual void HandleBlur(FocusEventArgs args)
+        protected virtual Task HandleBlur(FocusEventArgs args)
         {
-            OnBlur.InvokeAsync(args);
+            return OnBlur.InvokeAsync(args);
         }
 
-        protected virtual Task HandleBlurAsync(FocusEventArgs args)
+        protected virtual async Task HandleBlurAsync(FocusEventArgs args)
         {
-            HandleBlur(args);
-
-            return Task.CompletedTask;
+            await HandleBlur(args);
         }
 
-        protected virtual void HandleKeyDown(KeyboardEventArgs args)
+        protected virtual Task HandleKeyDown(KeyboardEventArgs args)
         {
-            OnKeyDown.InvokeAsync(args);
+            return OnKeyDown.InvokeAsync(args);
         }
 
-        protected virtual Task HandleKeyDownAsync(KeyboardEventArgs args)
+        protected virtual async Task HandleKeyDownAsync(KeyboardEventArgs args)
         {
-            HandleKeyDown(args);
-
-            return Task.CompletedTask;
+            await HandleKeyDown(args);
         }
 
-        protected virtual void HandleKeyUp(KeyboardEventArgs args)
+        protected virtual Task HandleKeyUp(KeyboardEventArgs args)
         {
-            OnKeyUp.InvokeAsync(args);
+            return OnKeyUp.InvokeAsync(args);
         }
 
-        protected virtual Task HandleKeyUpAsync(KeyboardEventArgs args)
+        protected virtual async Task HandleKeyUpAsync(KeyboardEventArgs args)
         {
-            HandleKeyUp(args);
-
-            return Task.CompletedTask;
+            await HandleKeyUp(args);
         }
 
-        protected virtual void HandleMouseDown(MouseEventArgs args)
+        protected virtual Task HandleMouseDown(MouseEventArgs args)
         {
-            OnMouseDown.InvokeAsync(args);
+            return OnMouseDown.InvokeAsync(args);
         }
 
-        protected virtual Task HandleMouseDownAsync(MouseEventArgs args)
+        protected virtual async Task HandleMouseDownAsync(MouseEventArgs args)
         {
-            HandleMouseDown(args);
-
-            return Task.CompletedTask;
+            await HandleMouseDown(args);
         }
 
-        protected virtual void HandleMouseUp(MouseEventArgs args)
+        protected virtual Task HandleMouseUp(MouseEventArgs args)
         {
-            OnMouseUp.InvokeAsync(args);
+            return OnMouseUp.InvokeAsync(args);
         }
 
-        protected virtual Task HandleMouseUpAsync(MouseEventArgs args)
+        protected virtual async Task HandleMouseUpAsync(MouseEventArgs args)
         {
-            HandleMouseUp(args);
-
-            return Task.CompletedTask;
+            await HandleMouseUp(args);
         }
 
-        protected virtual void HandleMouseEnter(EventArgs args)
+        protected virtual Task HandleMouseEnter(MouseEventArgs args)
         {
-            OnMouseEnter.InvokeAsync(args);
+            return OnMouseEnter.InvokeAsync(args);
         }
 
-        protected virtual Task HandleMouseEnterAsync(EventArgs args)
+        protected virtual async Task HandleMouseEnterAsync(MouseEventArgs args)
         {
-            HandleMouseEnter(args);
-
-            return Task.CompletedTask;
+            await HandleMouseEnter(args);
         }
 
-        protected virtual void HandleMouseLeave(EventArgs args)
+        protected virtual Task HandleMouseLeave(MouseEventArgs args)
         {
-            OnMouseLeave.InvokeAsync(args);
+            return OnMouseLeave.InvokeAsync(args);
         }
 
-        protected virtual Task HandleMouseLeaveAsync(EventArgs args)
+        protected virtual async Task HandleMouseLeaveAsync(MouseEventArgs args)
         {
-            HandleMouseLeave(args);
-
-            return Task.CompletedTask;
+            await HandleMouseLeave(args);
         }
 
-        protected virtual void HandleTouchStart(TouchEventArgs args)
+        protected virtual async Task HandleMouseOverAsync(MouseEventArgs args)
         {
-            OnTouchStart.InvokeAsync(args);
+            await OnMouseOver.InvokeAsync(args);
         }
 
-        protected virtual Task HandleTouchStartAsync(TouchEventArgs args)
+        protected virtual async Task HandleMouseOutAsync(MouseEventArgs args)
         {
-            HandleTouchStart(args);
-
-            return Task.CompletedTask;
+            await OnMouseOut.InvokeAsync(args);
         }
 
-        protected virtual void HandleTouchEnd(TouchEventArgs args)
+        protected virtual async Task HandleMouseMoveAsync(MouseEventArgs args)
         {
-            OnTouchEnd.InvokeAsync(args);
+            await OnMouseMove.InvokeAsync(args);
         }
 
-        protected virtual Task HandleTouchEndAsync(TouchEventArgs args)
+        protected virtual Task HandleTouchStart(TouchEventArgs args)
         {
-            HandleTouchEnd(args);
-
-            return Task.CompletedTask;
+            return OnTouchStart.InvokeAsync(args);
         }
 
-        protected virtual void HandleTouchMove(TouchEventArgs args)
+        protected virtual async Task HandleTouchStartAsync(TouchEventArgs args)
         {
-            OnTouchMove.InvokeAsync(args);
+            await HandleTouchStart(args);
         }
 
-        protected virtual Task HandleTouchMoveAsync(TouchEventArgs args)
+        protected virtual Task HandleTouchEnd(TouchEventArgs args)
         {
-            HandleTouchMove(args);
-
-            return Task.CompletedTask;
+            return OnTouchEnd.InvokeAsync(args);
         }
 
-        protected virtual void HandleClick(EventArgs args)
+        protected virtual async Task HandleTouchEndAsync(TouchEventArgs args)
         {
-            OnClick.InvokeAsync(args);
+            await HandleTouchEnd(args);
         }
 
-        protected virtual Task HandleClickAsync(EventArgs args)
+        protected virtual Task HandleTouchMove(TouchEventArgs args)
         {
-            HandleClick(args);
-
-            return Task.CompletedTask;
+            return OnTouchMove.InvokeAsync(args);
         }
 
-        protected virtual void HandleDrag(DragEventArgs args)
+        protected virtual async Task HandleTouchMoveAsync(TouchEventArgs args)
         {
-            OnDrag.InvokeAsync(args);
+            await HandleTouchMove(args);
         }
 
-        protected virtual Task HandleDragAsync(DragEventArgs args)
+        protected virtual Task HandleClick(EventArgs args)
         {
-            HandleDrag(args);
-
-            return Task.CompletedTask;
+            return OnClick.InvokeAsync(args);
         }
 
-        protected virtual void HandleDrop(DragEventArgs args)
+        protected virtual async Task HandleClickAsync(EventArgs args)
         {
-            OnDrop.InvokeAsync(args);
+            await HandleClick(args);
         }
 
-        protected virtual Task HandleDropAsync(DragEventArgs args)
+        protected virtual Task HandleDrag(DragEventArgs args)
         {
-            HandleDrop(args);
-
-            return Task.CompletedTask;
+            return OnDrag.InvokeAsync(args);
         }
 
-        protected virtual void HandleDragStart(DragEventArgs args)
+        protected virtual async Task HandleDragAsync(DragEventArgs args)
         {
-            OnDragStart.InvokeAsync(args);
+            await HandleDrag(args);
         }
 
-        protected virtual Task HandleDragStartAsync(DragEventArgs args)
+        protected virtual Task HandleDrop(DragEventArgs args)
         {
-            HandleDragStart(args);
-
-            return Task.CompletedTask;
+            return OnDrop.InvokeAsync(args);
         }
 
-        protected virtual void HandleDragEnd(DragEventArgs args)
+        protected virtual async Task HandleDropAsync(DragEventArgs args)
         {
-            OnDragEnd.InvokeAsync(args);
+            await HandleDrop(args);
         }
 
-        protected virtual Task HandleDragEndAsync(DragEventArgs args)
+        protected virtual Task HandleDragStart(DragEventArgs args)
         {
-            HandleDragEnd(args);
-
-            return Task.CompletedTask;
+            return OnDragStart.InvokeAsync(args);
         }
 
-        protected virtual void HandleDragEnter(DragEventArgs args)
+        protected virtual async Task HandleDragStartAsync(DragEventArgs args)
         {
-            OnDragEnter.InvokeAsync(args);
+            await HandleDragStart(args);
         }
 
-        protected virtual Task HandleDragEnterAsync(DragEventArgs args)
+        protected virtual Task HandleDragEnd(DragEventArgs args)
         {
-            HandleDragEnter(args);
-
-            return Task.CompletedTask;
+            return OnDragEnd.InvokeAsync(args);
         }
 
-        protected virtual void HandleDragExit(DragEventArgs args)
+        protected virtual async Task HandleDragEndAsync(DragEventArgs args)
         {
-            OnDragExit.InvokeAsync(args);
+            await HandleDragEnd(args);
         }
 
-        protected virtual Task HandleDragExitAsync(DragEventArgs args)
+        protected virtual Task HandleDragEnter(DragEventArgs args)
         {
-            HandleDragExit(args);
-
-            return Task.CompletedTask;
+            return OnDragEnter.InvokeAsync(args);
         }
 
-        protected virtual void HandleDragOver(DragEventArgs args)
+        protected virtual async Task HandleDragEnterAsync(DragEventArgs args)
         {
-            OnDragOver.InvokeAsync(args);
+            await HandleDragEnter(args);
         }
 
-        protected virtual Task HandleDragOverAsync(DragEventArgs args)
+        protected virtual Task HandleDragExit(DragEventArgs args)
         {
-            HandleDragOver(args);
-
-            return Task.CompletedTask;
+            return OnDragExit.InvokeAsync(args);
         }
 
-        protected virtual void HandleDragLeave(DragEventArgs args)
+        protected virtual async Task HandleDragExitAsync(DragEventArgs args)
         {
-            OnDragLeave.InvokeAsync(args);
+            await HandleDragExit(args);
         }
 
-        protected virtual Task HandleDragLeaveAsync(DragEventArgs args)
+        protected virtual Task HandleDragOver(DragEventArgs args)
         {
-            HandleDragLeave(args);
+            return OnDragOver.InvokeAsync(args);
+        }
 
-            return Task.CompletedTask;
+        protected virtual async Task HandleDragOverAsync(DragEventArgs args)
+        {
+            await HandleDragOver(args);
+        }
+
+        protected virtual Task HandleDragLeave(DragEventArgs args)
+        {
+            return OnDragLeave.InvokeAsync(args);
+        }
+
+        protected virtual async Task HandleDragLeaveAsync(DragEventArgs args)
+        {
+            await HandleDragLeave(args);
         }
 
         protected void Debug(ParameterView parameters)

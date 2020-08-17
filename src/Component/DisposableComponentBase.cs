@@ -14,11 +14,20 @@ namespace Skclusive.Core.Component
 
         private List<IExecutor> PostStateChange { get; set; } = new List<IExecutor>();
 
-        protected IDisposable StateHasChanged(IExecutor executor)
+
+        protected void AddStateChange(IExecutor executor)
         {
             PostStateChange.Add(executor);
+        }
 
-            StateHasChanged();
+        protected IDisposable StateHasChanged(IExecutor executor, bool immediate = true)
+        {
+            AddStateChange(executor);
+
+            if (immediate)
+            {
+                StateHasChanged();
+            }
 
             IDisposable disposable = new ActionDisposable(() =>
             {
@@ -42,7 +51,7 @@ namespace Skclusive.Core.Component
 
             PostStateChange.Clear();
 
-            foreach(var executor in executors)
+            foreach (var executor in executors)
             {
                 executor.Execute();
             }
@@ -56,7 +65,7 @@ namespace Skclusive.Core.Component
 
             await base.SetParametersAsync(parameters);
 
-            foreach(var disposable in disposables)
+            foreach (var disposable in disposables)
             {
                 Disposables.Remove(disposable);
             }
@@ -112,7 +121,7 @@ namespace Skclusive.Core.Component
 
         public static IDisposable SetTimeout(Action action, int delay = 0)
         {
-            if(delay <= 0)
+            if (delay <= 0)
             {
                 action();
 
