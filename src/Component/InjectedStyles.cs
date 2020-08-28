@@ -14,13 +14,18 @@ namespace Skclusive.Core.Component
         {
             base.BuildRenderTree(builder);
 
+            builder.OpenElement(0, "style");
+            builder.AddAttribute(1, "skclusive");
+
             var styles = StyleProviders.SelectMany(provider => provider.Styles).Distinct();
 
-            foreach (var style in styles.Select((type, index) => (type, index)))
+            foreach (var style in styles.Select((type, index) => (type, index: index + 2)))
             {
                 builder.OpenComponent(style.index, style.type);
                 builder.CloseComponent();
             }
+
+            builder.CloseElement();
         }
     }
 }

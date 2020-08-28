@@ -8,7 +8,8 @@ namespace Skclusive.Core.Component
         public static void TryAddCoreServices(this IServiceCollection services, ICoreConfig config)
         {
             services.TryAddSingleton<ICoreConfig>(config);
-            services.TryAddScoped<IRenderContext>((sp) => new RenderContext(config.IsServer, config.IsPreRendering));
+            services.TryAddScoped<IThemeService>(sp => new ThemeService(config.Theme));
+            services.TryAddScoped<IRenderContext>(sp => new RenderContext(config.IsServer, config.IsPreRendering));
         }
     }
 }

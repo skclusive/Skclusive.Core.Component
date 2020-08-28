@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Skclusive.Core.Component
 {
-    public class DisposableComponentBase : RenderComponentBase, IDisposable
+    public class DisposableComponentBase : RenderComponentBase, IAsyncDisposable, IDisposable
     {
         private List<IDisposable> Disposables { get; set; } = new List<IDisposable>();
 
@@ -78,14 +78,6 @@ namespace Skclusive.Core.Component
             return disposable;
         }
 
-        protected virtual void Dispose()
-        {
-        }
-
-        protected virtual void OnAfterUnmount()
-        {
-        }
-
         protected void Dispose(List<IDisposable> disposers)
         {
             var disposables = disposers.ToArray();
@@ -96,17 +88,6 @@ namespace Skclusive.Core.Component
             {
                 disposable?.Dispose();
             }
-        }
-
-        void IDisposable.Dispose()
-        {
-            Mounted = false;
-
-            OnAfterUnmount();
-
-            Dispose(Disposables);
-
-            Dispose();
         }
 
         protected IDisposable RunTimeout(Action action, int delay)
@@ -139,6 +120,39 @@ namespace Skclusive.Core.Component
         public static IExecutor CreateTimeout(Action action, int delay = 0)
         {
             return new Executor(() => SetTimeout(action, delay));
+        }
+
+        ValueTask IAsyncDisposable.DisposeAsync()
+        {
+            Mounted = false;
+
+            OnAfterUnmount();
+
+            Dispose(Disposables);
+
+            Dispose();
+
+            return DisposeAsync();
+        }
+
+        // workaround for IAsyncDispoable not working.
+        void IDisposable.Dispose()
+        {
+            _ = ((IAsyncDisposable)this).DisposeAsync();
+        }
+
+
+        protected virtual void Dispose()
+        {
+        }
+
+        protected virtual void OnAfterUnmount()
+        {
+        }
+
+        protected virtual ValueTask DisposeAsync()
+        {
+            return default;
         }
     }
 }
