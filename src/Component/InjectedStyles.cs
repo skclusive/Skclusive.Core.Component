@@ -7,16 +7,14 @@ namespace Skclusive.Core.Component
 {
     public class InjectedStyles : PureComponentBase
     {
-        [Inject]
-        public IEnumerable<IStyleTypeProvider> StyleProviders { set; get; } = Enumerable.Empty<IStyleTypeProvider>();
-
         [Parameter]
         public IReference RootRef { set; get; }
 
+        [Inject]
+        public IEnumerable<IStyleTypeProvider> StyleProviders { set; get; } = Enumerable.Empty<IStyleTypeProvider>();
+
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-            base.BuildRenderTree(builder);
-
             builder.OpenElement(0, "style");
             builder.AddAttribute(1, "skclusive");
 
