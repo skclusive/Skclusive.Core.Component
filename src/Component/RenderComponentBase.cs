@@ -59,6 +59,22 @@ namespace Skclusive.Core.Component
             return callback.InvokeAsync(arg);
         }
 
+        // Task IHandleEvent.HandleEventAsync(EventCallbackWorkItem callback, object arg)
+        // {
+        //     var task = callback.InvokeAsync(arg);
+        //     var shouldAwaitTask = task.Status != TaskStatus.RanToCompletion &&
+        //         task.Status != TaskStatus.Canceled;
+
+        //     // After each event, we synchronously re-render (unless !ShouldRender())
+        //     // This just saves the developer the trouble of putting "StateHasChanged();"
+        //     // at the end of every event callback.
+        //     StateHasChanged();
+
+        //     return shouldAwaitTask ?
+        //         CallStateHasChangedOnAsyncCompletion(task) :
+        //         Task.CompletedTask;
+        // }
+
         Task IHandleAfterRender.OnAfterRenderAsync()
         {
             var firstRender = !_hasCalledOnAfterRender;

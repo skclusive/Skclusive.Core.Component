@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.0-preview.8.*" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0-preview.8.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="5.0.0-rc.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0-rc.*" />
   </ItemGroup>
 </Project>

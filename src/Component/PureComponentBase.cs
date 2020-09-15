@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -24,7 +25,7 @@ namespace Skclusive.Core.Component
     /// Optional base class for components. Alternatively, components may
     /// implement <see cref="IComponent"/> directly.
     /// </summary>
-    public class PureComponentBase : IComponent
+    public class PureComponentBase : IComponent, IDisposable
     {
         protected RenderFragment _renderFragment;
         private RenderHandle _renderHandle;
@@ -43,6 +44,28 @@ namespace Skclusive.Core.Component
                 _hasNeverRendered = false;
                 BuildRenderTree(builder);
             };
+
+            TriggerRender = () => InvokeAsync(StateHasChanged);
+        }
+
+        private Func<Task> TriggerRender;
+
+        [Inject]
+        public IEnumerable<IComponentConfigurer> Configureres { set; get; }
+
+        private IDisposable _configureDisposable;
+
+        private void OnConfigure()
+        {
+            List<IDisposable> disposables = new List<IDisposable>();
+            IDisposable disposable;
+            foreach (var configurer in Configureres)
+            {
+                (disposable, _renderFragment) = configurer.Configure(_renderFragment, TriggerRender);
+
+                disposables.Add(disposable);
+            }
+            _configureDisposable = disposables.Count > 0 ? new CompositeDisposable(disposables) : null;
         }
 
         /// <summary>
@@ -192,6 +215,7 @@ namespace Skclusive.Core.Component
 
         private async Task RunInitAndSetParametersAsync()
         {
+            OnConfigure();
             OnInitialized();
             var task = OnInitializedAsync();
 
@@ -245,7 +269,7 @@ namespace Skclusive.Core.Component
                 Task.CompletedTask;
         }
 
-        private async Task CallStateHasChangedOnAsyncCompletion(Task task)
+        internal async Task CallStateHasChangedOnAsyncCompletion(Task task)
         {
             try
             {
@@ -263,6 +287,24 @@ namespace Skclusive.Core.Component
             }
 
             StateHasChanged();
+        }
+
+        void IDisposable.Dispose()
+        {
+            _configureDisposable?.Dispose();
+            // workaround for IAsyncDispoable not working.
+            if (this is IAsyncDisposable disposable)
+            {
+               _ = disposable.DisposeAsync();
+            }
+            else
+            {
+                Dispose();
+            }
+        }
+
+        protected virtual void Dispose()
+        {
         }
     }
 }

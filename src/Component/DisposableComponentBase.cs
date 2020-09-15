@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Skclusive.Core.Component
 {
-    public class DisposableComponentBase : RenderComponentBase, IAsyncDisposable, IDisposable
+    public class DisposableComponentBase : RenderComponentBase, IAsyncDisposable
     {
         private List<IDisposable> Disposables { get; set; } = new List<IDisposable>();
 
@@ -133,17 +133,6 @@ namespace Skclusive.Core.Component
             Dispose();
 
             return DisposeAsync();
-        }
-
-        // workaround for IAsyncDispoable not working.
-        void IDisposable.Dispose()
-        {
-            _ = ((IAsyncDisposable)this).DisposeAsync();
-        }
-
-
-        protected virtual void Dispose()
-        {
         }
 
         protected virtual void OnAfterUnmount()
