@@ -226,7 +226,9 @@ namespace Skclusive.Core.Component
                 // to defer calling StateHasChanged up until the first bit of async code happens or until
                 // the end. Additionally, we want to avoid calling StateHasChanged if no
                 // async work is to be performed.
-                StateHasChanged();
+
+                // skclusive commented
+                // StateHasChanged();
 
                 try
                 {
@@ -262,28 +264,31 @@ namespace Skclusive.Core.Component
 
             // We always call StateHasChanged here as we want to trigger a rerender after OnParametersSet and
             // the synchronous part of OnParametersSetAsync has run.
-            StateHasChanged();
 
-            return shouldAwaitTask ?
-                CallStateHasChangedOnAsyncCompletion(task) :
-                Task.CompletedTask;
+            // skclusive commented
+            // StateHasChanged();
+
+            return CallStateHasChangedOnAsyncCompletion(shouldAwaitTask, task);
         }
 
-        internal async Task CallStateHasChangedOnAsyncCompletion(Task task)
+        internal async Task CallStateHasChangedOnAsyncCompletion(bool shouldAwaitTask, Task task)
         {
-            try
+            if (shouldAwaitTask)
             {
-                await task;
-            }
-            catch // avoiding exception filters for AOT runtime support
-            {
-                // Ignore exceptions from task cancellations, but don't bother issuing a state change.
-                if (task.IsCanceled)
+                try
                 {
-                    return;
+                    await task;
                 }
+                catch // avoiding exception filters for AOT runtime support
+                {
+                    // Ignore exceptions from task cancellations, but don't bother issuing a state change.
+                    if (task.IsCanceled)
+                    {
+                        return;
+                    }
 
-                throw;
+                    throw;
+                }
             }
 
             StateHasChanged();
