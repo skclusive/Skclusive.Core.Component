@@ -25,7 +25,7 @@ namespace Skclusive.Core.Component
     /// Optional base class for components. Alternatively, components may
     /// implement <see cref="IComponent"/> directly.
     /// </summary>
-    public class PureComponentBase : IComponent, IDisposable
+    public class PureComponentBase : IComponent, IAsyncDisposable
     {
         protected RenderFragment _renderFragment;
         private RenderHandle _renderHandle;
@@ -294,18 +294,24 @@ namespace Skclusive.Core.Component
             StateHasChanged();
         }
 
-        void IDisposable.Dispose()
+        async ValueTask IAsyncDisposable.DisposeAsync()
         {
             _configureDisposable?.Dispose();
-            // workaround for IAsyncDispoable not working.
-            if (this is IAsyncDisposable disposable)
-            {
-               _ = disposable.DisposeAsync();
-            }
-            else
-            {
-                Dispose();
-            }
+
+            DisposeInternal();
+
+            Dispose();
+
+            await DisposeAsync();
+        }
+
+        internal virtual void DisposeInternal()
+        {
+        }
+
+        protected virtual ValueTask DisposeAsync()
+        {
+            return default;
         }
 
         protected virtual void Dispose()

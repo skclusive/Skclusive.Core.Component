@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Skclusive.Core.Component
 {
-    public class DisposableComponentBase : RenderComponentBase, IAsyncDisposable
+    public class DisposableComponentBase : RenderComponentBase
     {
         private List<IDisposable> Disposables { get; set; } = new List<IDisposable>();
 
@@ -122,7 +122,7 @@ namespace Skclusive.Core.Component
             return new Executor(() => SetTimeout(action, delay));
         }
 
-        ValueTask IAsyncDisposable.DisposeAsync()
+        internal override void DisposeInternal()
         {
             Mounted = false;
 
@@ -130,18 +130,11 @@ namespace Skclusive.Core.Component
 
             Dispose(Disposables);
 
-            Dispose();
-
-            return DisposeAsync();
+            base.DisposeInternal();
         }
 
         protected virtual void OnAfterUnmount()
         {
-        }
-
-        protected virtual ValueTask DisposeAsync()
-        {
-            return default;
         }
     }
 }
