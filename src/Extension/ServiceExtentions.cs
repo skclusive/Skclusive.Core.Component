@@ -23,6 +23,15 @@ namespace Skclusive.Core.Component
             collection.TryAddEnumerable(serviceDescriptor);
         }
 
+        public static void TryAddSingletonEnumerable<TService, TImplementation>(this IServiceCollection collection)
+            where TService : class
+            where TImplementation : class, TService
+        {
+            var serviceDescriptor = ServiceDescriptor.Singleton<TService, TImplementation>();
+
+            collection.TryAddEnumerable(serviceDescriptor);
+        }
+
         public static void TryAddStyleTypeProvider<TStyleTypeProvider>(this IServiceCollection collection) where TStyleTypeProvider : class, IStyleTypeProvider
         {
             collection.TryAddScopedEnumerable<IStyleTypeProvider, TStyleTypeProvider>();
