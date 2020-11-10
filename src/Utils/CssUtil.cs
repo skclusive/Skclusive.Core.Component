@@ -15,31 +15,46 @@ namespace Skclusive.Core.Component
             .Select(pair => Tuple.Create<string, object>(pair[0], pair[1]));
         }
 
-        public static string ToStyle(IEnumerable<Tuple<string, object>> styles, string style = "")
+        public static string ToStyle(IEnumerable<Tuple<string, object>> styles, string style = null, string contextStyle = null)
         {
             var _style = string.Join(";", styles
                 .Select(p => $"{p.Item1}:{p.Item2}"));
 
-            if (!string.IsNullOrWhiteSpace(style))
+            return ToStyle(_style, style, contextStyle);
+        }
+
+        public static string ToStyle(string first, params string[] styles)
+        {
+            foreach (var style in styles)
             {
-                if (!string.IsNullOrWhiteSpace(_style))
+                first = ToStyle(first, style);
+            }
+
+            return first;
+        }
+
+        public static string ToStyle(string first, string second)
+        {
+            if (!string.IsNullOrWhiteSpace(second))
+            {
+                if (!string.IsNullOrWhiteSpace(first))
                 {
-                    _style = $"{_style};{style}";
+                    first = $"{first};{second}";
                 }
                 else
                 {
-                    _style = style;
+                    first = second;
                 }
             }
-            return _style;
+            return first;
         }
 
-        public static string ToClass(string selector, IEnumerable<string> classes, string suffix = "")
+        public static string ToClass(string selector, IEnumerable<string> classes, string clazz = null, string contextClass = null)
         {
-            return ToClass(selector, null, classes, suffix);
+            return ToClass(selector, null, classes, clazz, contextClass);
         }
 
-        public static string ToClass(string selector, string extendor, IEnumerable<string> classes, string suffix = "")
+        public static string ToClass(string selector, string extendor, IEnumerable<string> classes, string clazz = null, string contextClass = null)
         {
             var extending = !string.IsNullOrWhiteSpace(extendor);
 
@@ -62,23 +77,38 @@ namespace Skclusive.Core.Component
                 return current;
             }));
 
-            if (!string.IsNullOrWhiteSpace(suffix))
+            return ToClass(_class, clazz, contextClass);
+        }
+
+        public static string ToClass(string first, params string[] classes)
+        {
+            foreach (var _class in classes)
             {
-                if (suffix.StartsWith("~", StringComparison.Ordinal))
+                first = ToClass(first, _class);
+            }
+
+            return first;
+        }
+
+        public static string ToClass(string first, string second)
+        {
+            if (!string.IsNullOrWhiteSpace(second))
+            {
+                if (second.StartsWith("~", StringComparison.Ordinal))
                 {
-                    suffix = suffix.Substring(1);
+                    second = second.Substring(1);
                 }
 
-                if (!string.IsNullOrWhiteSpace(_class))
+                if (!string.IsNullOrWhiteSpace(first))
                 {
-                    _class = $"{_class} {suffix}";
+                    first = $"{first} {second}";
                 }
                 else
                 {
-                    _class = suffix;
+                    first = second;
                 }
             }
-            return _class;
+            return first;
         }
     }
 }

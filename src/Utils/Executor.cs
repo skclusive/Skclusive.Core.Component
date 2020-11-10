@@ -6,6 +6,8 @@ namespace Skclusive.Core.Component
     {
         private IDisposable Disposable { set; get; }
 
+        private bool disposed { set; get; } = false;
+
         private Func<IDisposable> Execution { set; get; }
 
         public Executor(Func<IDisposable> execution)
@@ -15,14 +17,16 @@ namespace Skclusive.Core.Component
 
         public void Dispose()
         {
-            if (Disposable == null)
+            if (disposed)
             {
                 throw new ObjectDisposedException(typeof(ActionDisposable).Name);
             }
 
-            Disposable.Dispose();
+            Disposable?.Dispose();
 
             Disposable = null;
+
+            disposed = true;
         }
 
         public void Execute()

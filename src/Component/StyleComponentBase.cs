@@ -11,5 +11,9 @@
         protected readonly string OpenCurly = "{";
 
         protected readonly string CloseCurly = "}";
+
+        protected readonly string MediaSchemeLight = "@media (prefers-color-scheme: light)";
+
+        protected readonly string MediaSchemeDark = "@media (prefers-color-scheme: dark)";
     }
 }

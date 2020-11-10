@@ -2,6 +2,8 @@
 {
     public interface ICoreConfig
     {
+        Theme Theme { get; }
+
         bool IsServer { get; }
 
         bool IsPreRendering { get; }
@@ -16,6 +18,8 @@
             public bool IsServer { get; internal set; }
 
             public bool IsPreRendering { get; internal set; }
+
+            public Theme Theme { get; internal set; }
         }
 
         protected CoreConfig _config;
@@ -27,6 +31,8 @@
         protected CoreConfigBuilder(CoreConfig config)
         {
             _config = config;
+
+            _config.Theme = Theme.Light;
         }
 
         public B WithIsServer(bool isServer)
@@ -43,14 +49,25 @@
             return Builder();
         }
 
+        public B WithTheme(Theme theme)
+        {
+            _config.Theme = theme;
+
+            return Builder();
+        }
+
         public B With(ICoreConfig config)
         {
             WithIsServer(config.IsServer);
 
             WithIsPreRendering(config.IsPreRendering);
 
+            WithTheme(config.Theme);
+
             return Builder();
         }
+
+
 
         public C Build()
         {

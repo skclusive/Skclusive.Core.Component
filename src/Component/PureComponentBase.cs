@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -24,7 +25,7 @@ namespace Skclusive.Core.Component
     /// Optional base class for components. Alternatively, components may
     /// implement <see cref="IComponent"/> directly.
     /// </summary>
-    public class PureComponentBase : IComponent
+    public class PureComponentBase : IComponent, IAsyncDisposable
     {
         protected RenderFragment _renderFragment;
         private RenderHandle _renderHandle;
@@ -43,6 +44,28 @@ namespace Skclusive.Core.Component
                 _hasNeverRendered = false;
                 BuildRenderTree(builder);
             };
+
+            TriggerRender = () => InvokeAsync(StateHasChanged);
+        }
+
+        private Func<Task> TriggerRender;
+
+        [Inject]
+        public IEnumerable<IComponentConfigurer> Configureres { set; get; }
+
+        private IDisposable _configureDisposable;
+
+        private void OnConfigure()
+        {
+            List<IDisposable> disposables = new List<IDisposable>();
+            IDisposable disposable;
+            foreach (var configurer in Configureres)
+            {
+                (disposable, _renderFragment) = configurer.Configure(_renderFragment, TriggerRender);
+
+                disposables.Add(disposable);
+            }
+            _configureDisposable = disposables.Count > 0 ? new CompositeDisposable(disposables) : null;
         }
 
         /// <summary>
@@ -192,6 +215,7 @@ namespace Skclusive.Core.Component
 
         private async Task RunInitAndSetParametersAsync()
         {
+            OnConfigure();
             OnInitialized();
             var task = OnInitializedAsync();
 
@@ -202,7 +226,9 @@ namespace Skclusive.Core.Component
                 // to defer calling StateHasChanged up until the first bit of async code happens or until
                 // the end. Additionally, we want to avoid calling StateHasChanged if no
                 // async work is to be performed.
-                StateHasChanged();
+
+                // skclusive commented
+                // StateHasChanged();
 
                 try
                 {
@@ -238,31 +264,58 @@ namespace Skclusive.Core.Component
 
             // We always call StateHasChanged here as we want to trigger a rerender after OnParametersSet and
             // the synchronous part of OnParametersSetAsync has run.
-            StateHasChanged();
 
-            return shouldAwaitTask ?
-                CallStateHasChangedOnAsyncCompletion(task) :
-                Task.CompletedTask;
+            // skclusive commented
+            // StateHasChanged();
+
+            return CallStateHasChangedOnAsyncCompletion(shouldAwaitTask, task);
         }
 
-        private async Task CallStateHasChangedOnAsyncCompletion(Task task)
+        internal async Task CallStateHasChangedOnAsyncCompletion(bool shouldAwaitTask, Task task)
         {
-            try
+            if (shouldAwaitTask)
             {
-                await task;
-            }
-            catch // avoiding exception filters for AOT runtime support
-            {
-                // Ignore exceptions from task cancellations, but don't bother issuing a state change.
-                if (task.IsCanceled)
+                try
                 {
-                    return;
+                    await task;
                 }
+                catch // avoiding exception filters for AOT runtime support
+                {
+                    // Ignore exceptions from task cancellations, but don't bother issuing a state change.
+                    if (task.IsCanceled)
+                    {
+                        return;
+                    }
 
-                throw;
+                    throw;
+                }
             }
 
             StateHasChanged();
+        }
+
+        async ValueTask IAsyncDisposable.DisposeAsync()
+        {
+            _configureDisposable?.Dispose();
+
+            DisposeInternal();
+
+            Dispose();
+
+            await DisposeAsync();
+        }
+
+        internal virtual void DisposeInternal()
+        {
+        }
+
+        protected virtual ValueTask DisposeAsync()
+        {
+            return default;
+        }
+
+        protected virtual void Dispose()
+        {
         }
     }
 }

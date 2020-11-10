@@ -4,8 +4,10 @@ namespace Skclusive.Core.Component
 {
     public class ThemeComponentBase : CssComponentBase
     {
-        [Parameter]
-        public Theme Theme { set; get; } = Theme.Auto;
+        [CascadingParameter]
+        public IThemeContext ThemeContext { set; get; }
+
+        public Theme Theme => ThemeContext.Theme;
 
         protected bool IsAuto => Theme == Theme.Auto;
 

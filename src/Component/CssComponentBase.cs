@@ -82,9 +82,15 @@ namespace Skclusive.Core.Component
 
         public override string ToString() => Stamp;
 
-        public virtual string _Style
+        protected virtual IComponentContext _Context => null;
+
+        protected virtual string _ContextClass => _Context?.Class;
+
+         protected virtual string _ContextStyle => _Context?.Style;
+
+        protected virtual string _Style
         {
-            get => CssUtil.ToStyle(Styles, Style);
+            get => CssUtil.ToStyle(Styles, Style, _ContextStyle);
         }
 
         protected virtual IEnumerable<Tuple<string, object>> Styles
@@ -94,7 +100,12 @@ namespace Skclusive.Core.Component
 
         protected virtual string _Class
         {
-            get => CssUtil.ToClass(Selector, Overridable, Classes, Class);
+            get => CssUtil.ToClass(Selector, Overridable, Classes, Class, _ContextClass);
+        }
+
+        protected virtual string GetRootName()
+        {
+            return "Root";
         }
 
         protected virtual IEnumerable<string> Classes
@@ -103,7 +114,7 @@ namespace Skclusive.Core.Component
             {
                 if (!string.IsNullOrWhiteSpace(Selector))
                 {
-                    yield return "Root";
+                    yield return GetRootName();
 
                     if (Disabled.HasValue && Disabled.Value)
                         yield return nameof(Disabled);
