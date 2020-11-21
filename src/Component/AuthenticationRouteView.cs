@@ -26,6 +26,10 @@ namespace Skclusive.Core.Component
         [Parameter]
         public RouteData RouteData { get; set; }
 
+        public AuthenticationRouteView(bool? disableBinding = true, bool? disableConfigurer = true) : base(disableBinding, disableConfigurer)
+        {
+        }
+
         protected override async Task OnParametersSetAsync()
         {
             currentAuthenticationState = await AuthenticationState;

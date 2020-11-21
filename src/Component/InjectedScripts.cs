@@ -18,10 +18,17 @@ namespace Skclusive.Core.Component
         [Inject]
         public IEnumerable<IScriptTypeProvider> ScriptProviders { set; get; } = Enumerable.Empty<IScriptTypeProvider>();
 
+        /// <summary>
+        /// Constructs an instance of <see cref="InjectedScripts"/>.
+        /// </summary>
+        public InjectedScripts() : base(disableBinding: true, disableConfigurer: true)
+        {
+        }
+
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
             builder.OpenElement(0, "script");
-            builder.AddAttribute(1, "skclusive");
+            builder.AddAttribute(1, "skclusive", "");
 
             if (RootRef != null)
             {

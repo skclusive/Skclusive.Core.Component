@@ -33,6 +33,10 @@ namespace Skclusive.Core.Component
 
         #endregion
 
+        public Component(string selector = "", bool? disableBinding = null, bool? disableConfigurer = null) : base(selector, disableBinding, disableConfigurer)
+        {
+        }
+
         public void Focus()
         {
             // TODO: implement focus using js introp

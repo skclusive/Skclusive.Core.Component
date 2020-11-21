@@ -9,7 +9,7 @@ namespace Skclusive.Core.Component
 {
     public class EventComponentBase : CssComponentBase
     {
-        public EventComponentBase(string selector = "") : base(selector)
+        public EventComponentBase(string selector = "", bool? disableBinding = null, bool? disableConfigurer = null) : base(selector, disableBinding, disableConfigurer)
         {
         }
 

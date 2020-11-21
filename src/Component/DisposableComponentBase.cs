@@ -14,6 +14,12 @@ namespace Skclusive.Core.Component
 
         private List<IExecutor> PostStateChange { get; set; } = new List<IExecutor>();
 
+        /// <summary>
+        /// Constructs an instance of <see cref="DisposableComponentBase"/>.
+        /// </summary>
+        public DisposableComponentBase(bool? disableBinding = null, bool? disableConfigurer = null) : base(disableBinding, disableConfigurer)
+        {
+        }
 
         protected void AddStateChange(IExecutor executor)
         {

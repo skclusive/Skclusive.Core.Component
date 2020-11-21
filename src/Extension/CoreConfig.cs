@@ -7,6 +7,10 @@
         bool IsServer { get; }
 
         bool IsPreRendering { get; }
+
+        bool DisableBinding { get; }
+
+        bool DisableConfigurer { get; }
     }
 
     public abstract class CoreConfigBuilder<B, C>
@@ -18,6 +22,10 @@
             public bool IsServer { get; internal set; }
 
             public bool IsPreRendering { get; internal set; }
+
+            public bool DisableBinding { get; internal set; }
+
+            public bool DisableConfigurer { get; internal set; }
 
             public Theme Theme { get; internal set; }
         }
@@ -49,6 +57,21 @@
             return Builder();
         }
 
+        public B WithDisableBinding(bool disableBinding)
+        {
+            _config.DisableBinding = disableBinding;
+
+            return Builder();
+        }
+
+        public B WithDisableConfigurer(bool disableConfigurer)
+        {
+            _config.DisableConfigurer = disableConfigurer;
+
+            return Builder();
+        }
+
+
         public B WithTheme(Theme theme)
         {
             _config.Theme = theme;
@@ -62,12 +85,12 @@
 
             WithIsPreRendering(config.IsPreRendering);
 
+            WithDisableBinding(config.DisableBinding);
+
             WithTheme(config.Theme);
 
             return Builder();
         }
-
-
 
         public C Build()
         {

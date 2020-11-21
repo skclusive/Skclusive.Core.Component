@@ -25,7 +25,10 @@ namespace Skclusive.Core.Component
     /// Optional base class for components. Alternatively, components may
     /// implement <see cref="IComponent"/> directly.
     /// </summary>
-    public class PureComponentBase : IComponent, IAsyncDisposable
+    public class PureComponentBase : IComponent, IHandleEvent, IAsyncDisposable
+#if NETSTANDARD2_0
+                , IDisposable
+#endif
     {
         protected RenderFragment _renderFragment;
         private RenderHandle _renderHandle;
@@ -36,8 +39,12 @@ namespace Skclusive.Core.Component
         /// <summary>
         /// Constructs an instance of <see cref="PureComponentBase"/>.
         /// </summary>
-        public PureComponentBase()
+        public PureComponentBase(bool? disableBinding = null, bool? disableConfigurer = null)
         {
+            _DisableBinding = disableBinding;
+
+            _DisableConfigurer = disableConfigurer;
+
             _renderFragment = builder =>
             {
                 _hasPendingQueuedRender = false;
@@ -50,22 +57,36 @@ namespace Skclusive.Core.Component
 
         private Func<Task> TriggerRender;
 
+        private bool? _DisableBinding;
+
+        private bool? _DisableConfigurer;
+
         [Inject]
         public IEnumerable<IComponentConfigurer> Configureres { set; get; }
 
+        [Inject]
+        public ICoreConfig CoreConfig { set; get; }
+
         private IDisposable _configureDisposable;
+
+        protected bool DisableBinding => _DisableBinding.HasValue ? _DisableBinding.Value : CoreConfig.DisableBinding;
+
+        protected bool DisableConfigurer => _DisableConfigurer.HasValue ? _DisableConfigurer.Value : CoreConfig.DisableConfigurer;
 
         private void OnConfigure()
         {
-            List<IDisposable> disposables = new List<IDisposable>();
-            IDisposable disposable;
-            foreach (var configurer in Configureres)
+            if (!DisableConfigurer)
             {
-                (disposable, _renderFragment) = configurer.Configure(_renderFragment, TriggerRender);
+                List<IDisposable> disposables = new List<IDisposable>();
+                IDisposable disposable;
+                foreach (var configurer in Configureres)
+                {
+                    (disposable, _renderFragment) = configurer.Configure(_renderFragment, TriggerRender);
 
-                disposables.Add(disposable);
+                    disposables.Add(disposable);
+                }
+                _configureDisposable = disposables.Count > 0 ? new CompositeDisposable(disposables) : null;
             }
-            _configureDisposable = disposables.Count > 0 ? new CompositeDisposable(disposables) : null;
         }
 
         /// <summary>
@@ -256,23 +277,29 @@ namespace Skclusive.Core.Component
         {
             OnParametersSet();
             var task = OnParametersSetAsync();
+
+            // We always call StateHasChanged here as we want to trigger a rerender after OnParametersSet and
+            // the synchronous part of OnParametersSetAsync has run.
+
+            // skclusive commented. moved to CallStateHasChangedOnAsyncCompletion.
+            // StateHasChanged();
+
+            return CallStateHasChangedOnAsyncCompletion(task, parameterChanged: true);
+        }
+
+        internal async Task CallStateHasChangedOnAsyncCompletion(Task task, bool parameterChanged)
+        {
             // If no async work is to be performed, i.e. the task has already ran to completion
             // or was canceled by the time we got to inspect it, avoid going async and re-invoking
             // StateHasChanged at the culmination of the async work.
             var shouldAwaitTask = task.Status != TaskStatus.RanToCompletion &&
                 task.Status != TaskStatus.Canceled;
 
-            // We always call StateHasChanged here as we want to trigger a rerender after OnParametersSet and
-            // the synchronous part of OnParametersSetAsync has run.
+            if (!DisableBinding)
+            {
+                StateHasChanged();
+            }
 
-            // skclusive commented
-            // StateHasChanged();
-
-            return CallStateHasChangedOnAsyncCompletion(shouldAwaitTask, task);
-        }
-
-        internal async Task CallStateHasChangedOnAsyncCompletion(bool shouldAwaitTask, Task task)
-        {
             if (shouldAwaitTask)
             {
                 try
@@ -291,7 +318,24 @@ namespace Skclusive.Core.Component
                 }
             }
 
-            StateHasChanged();
+            if (!DisableBinding || parameterChanged)
+            {
+                StateHasChanged();
+            }
+        }
+
+        Task IHandleEvent.HandleEventAsync(EventCallbackWorkItem callback, object arg)
+        {
+            var task = callback.InvokeAsync(arg);
+
+            // skclusive commented. moved to CallStateHasChangedOnAsyncCompletion.
+
+            // After each event, we synchronously re-render (unless !ShouldRender())
+            // This just saves the developer the trouble of putting "StateHasChanged();"
+            // at the end of every event callback.
+            // StateHasChanged();
+
+            return CallStateHasChangedOnAsyncCompletion(task, parameterChanged: false);
         }
 
         async ValueTask IAsyncDisposable.DisposeAsync()
@@ -313,6 +357,18 @@ namespace Skclusive.Core.Component
         {
             return default;
         }
+
+#if NETSTANDARD2_0
+
+        void IDisposable.Dispose()
+        {
+            if (this is IAsyncDisposable disposable)
+            {
+                _ = disposable.DisposeAsync();
+            }
+        }
+
+#endif
 
         protected virtual void Dispose()
         {

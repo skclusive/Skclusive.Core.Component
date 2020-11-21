@@ -11,7 +11,7 @@ namespace Skclusive.Core.Component
             if (string.IsNullOrWhiteSpace(style))
             return Enumerable.Empty<Tuple<string, object>>();
 
-            return style.Split(";").Select(single => single.Split(":"))
+            return style.Split(';').Select(single => single.Split(':'))
             .Select(pair => Tuple.Create<string, object>(pair[0], pair[1]));
         }
 
