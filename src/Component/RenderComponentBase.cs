@@ -33,7 +33,14 @@ namespace Skclusive.Core.Component
         /// <summary>
         /// Constructs an instance of <see cref="RenderComponentBase"/>.
         /// </summary>
-        public RenderComponentBase(bool? disableBinding = null, bool? disableConfigurer = null) : base(disableBinding, disableConfigurer)
+        public RenderComponentBase() : this(disableBinding: null, disableConfigurer: null)
+        {
+        }
+
+        /// <summary>
+        /// Constructs an instance of <see cref="RenderComponentBase"/>.
+        /// </summary>
+        public RenderComponentBase(bool? disableBinding, bool? disableConfigurer) : base(disableBinding, disableConfigurer)
         {
         }
 

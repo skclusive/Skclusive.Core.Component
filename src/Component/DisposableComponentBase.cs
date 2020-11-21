@@ -17,7 +17,14 @@ namespace Skclusive.Core.Component
         /// <summary>
         /// Constructs an instance of <see cref="DisposableComponentBase"/>.
         /// </summary>
-        public DisposableComponentBase(bool? disableBinding = null, bool? disableConfigurer = null) : base(disableBinding, disableConfigurer)
+        public DisposableComponentBase() : this(disableBinding: null, disableConfigurer: null)
+        {
+        }
+
+        /// <summary>
+        /// Constructs an instance of <see cref="DisposableComponentBase"/>.
+        /// </summary>
+        public DisposableComponentBase(bool? disableBinding, bool? disableConfigurer) : base(disableBinding, disableConfigurer)
         {
         }
 

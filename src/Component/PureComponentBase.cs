@@ -39,7 +39,14 @@ namespace Skclusive.Core.Component
         /// <summary>
         /// Constructs an instance of <see cref="PureComponentBase"/>.
         /// </summary>
-        public PureComponentBase(bool? disableBinding = null, bool? disableConfigurer = null)
+        public PureComponentBase() : this(disableBinding: null, disableConfigurer: null)
+        {
+        }
+
+        /// <summary>
+        /// Constructs an instance of <see cref="PureComponentBase"/>.
+        /// </summary>
+        public PureComponentBase(bool? disableBinding, bool? disableConfigurer)
         {
             _DisableBinding = disableBinding;
 
