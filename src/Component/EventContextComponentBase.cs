@@ -16,7 +16,7 @@ namespace Skclusive.Core.Component
         [Parameter]
         public IReference ChildRef { get; set; } = new Reference("ChildContextRef");
 
-        public EventContextComponentBase(string selector = ""): base(selector)
+        public EventContextComponentBase(string selector = "", bool? disableBinding = null, bool? disableConfigurer = null) : base(selector, disableBinding, disableConfigurer)
         {
         }
 

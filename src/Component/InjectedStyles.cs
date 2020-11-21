@@ -13,10 +13,17 @@ namespace Skclusive.Core.Component
         [Inject]
         public IEnumerable<IStyleTypeProvider> StyleProviders { set; get; } = Enumerable.Empty<IStyleTypeProvider>();
 
+        /// <summary>
+        /// Constructs an instance of <see cref="InjectedStyles"/>.
+        /// </summary>
+        public InjectedStyles() : base(disableBinding: true, disableConfigurer: true)
+        {
+        }
+
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
             builder.OpenElement(0, "style");
-            builder.AddAttribute(1, "skclusive");
+            builder.AddAttribute(1, "skclusive", "");
 
             if (RootRef != null)
             {

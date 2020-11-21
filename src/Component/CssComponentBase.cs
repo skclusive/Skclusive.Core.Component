@@ -73,7 +73,10 @@ namespace Skclusive.Core.Component
         [Parameter(CaptureUnmatchedValues = true)]
         public Dictionary<string, object> Attributes { get; set; }
 
-        public CssComponentBase(string selector = "")
+        /// <summary>
+        /// Constructs an instance of <see cref="CssComponentBase"/>.
+        /// </summary>
+        public CssComponentBase(string selector = "", bool? disableBinding = true, bool? disableConfigurer = true) : base(disableBinding, disableConfigurer)
         {
             Stamp = GetType().Name + "_" + Guid.NewGuid().ToString();
 

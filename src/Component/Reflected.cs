@@ -12,6 +12,10 @@ namespace Skclusive.Core.Component
         [Parameter]
         public bool AddAttributes { set; get; }
 
+        public Reflected(bool? disableBinding = true, bool? disableConfigurer = true) : base("", disableBinding, disableConfigurer)
+        {
+        }
+
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
             if (Type != null)

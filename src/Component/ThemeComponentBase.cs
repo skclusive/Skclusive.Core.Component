@@ -14,5 +14,12 @@ namespace Skclusive.Core.Component
         protected bool IsDark => Theme == Theme.Dark;
 
         protected bool IsLight => Theme == Theme.Light;
+
+        /// <summary>
+        /// Constructs an instance of <see cref="ThemeComponentBase"/>.
+        /// </summary>
+        public ThemeComponentBase(bool? disableBinding = true, bool? disableConfigurer = true) : base("", disableBinding, disableConfigurer)
+        {
+        }
     }
 }

@@ -17,6 +17,10 @@ namespace Skclusive.Core.Component
         [Parameter]
         public bool If { set; get; }
 
+        public Condition(bool? disableBinding = true, bool? disableConfigurer = null) : base(disableBinding, disableConfigurer)
+        {
+        }
+
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
             if (If)
