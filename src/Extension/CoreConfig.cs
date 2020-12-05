@@ -87,6 +87,8 @@
 
             WithDisableBinding(config.DisableBinding);
 
+            WithDisableConfigurer(config.DisableConfigurer);
+
             WithTheme(config.Theme);
 
             return Builder();

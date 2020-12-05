@@ -26,9 +26,9 @@ namespace Skclusive.Core.Component
     /// implement <see cref="IComponent"/> directly.
     /// </summary>
     public class PureComponentBase : IComponent, IHandleEvent, IAsyncDisposable
-#if NETSTANDARD2_0
-                , IDisposable
-#endif
+    #if NETSTANDARD2_0
+        , IDisposable
+    #endif
     {
         protected RenderFragment _renderFragment;
         private RenderHandle _renderHandle;
@@ -365,7 +365,7 @@ namespace Skclusive.Core.Component
             return default;
         }
 
-#if NETSTANDARD2_0
+        #if NETSTANDARD2_0
 
         void IDisposable.Dispose()
         {
@@ -375,7 +375,7 @@ namespace Skclusive.Core.Component
             }
         }
 
-#endif
+        #endif
 
         protected virtual void Dispose()
         {

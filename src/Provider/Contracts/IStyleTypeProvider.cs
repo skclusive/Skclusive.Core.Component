@@ -5,6 +5,8 @@ namespace Skclusive.Core.Component
 {
     public interface IStyleTypeProvider
     {
+        int? Priority { get; }
+
         IEnumerable<Type> Styles { get; }
     }
 }

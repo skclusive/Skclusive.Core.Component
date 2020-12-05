@@ -1,4 +1,6 @@
-﻿namespace Skclusive.Core.Component
+﻿using Microsoft.AspNetCore.Components;
+
+namespace Skclusive.Core.Component
 {
     public class StyleComponentBase : StaticComponentBase
     {

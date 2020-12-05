@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Components;
@@ -9,6 +10,9 @@ namespace Skclusive.Core.Component
     {
         [Parameter]
         public IReference RootRef { set; get; }
+
+        [Inject]
+        public IRenderContext RenderContext { set; get; }
 
         [Inject]
         public IEnumerable<IStyleTypeProvider> StyleProviders { set; get; } = Enumerable.Empty<IStyleTypeProvider>();
@@ -30,12 +34,27 @@ namespace Skclusive.Core.Component
                 builder.AddElementReferenceCapture(2, elementRef => RootRef.Current = elementRef);
             }
 
-            var styles = StyleProviders.SelectMany(provider => provider.Styles).Distinct();
+            var providers = StyleProviders.Distinct().OrderByDescending(provider => provider.Priority.HasValue).ThenBy(provider => provider.Priority);
 
-            foreach (var style in styles.Select((type, index) => (type, index: index + 3)))
+            var index = 2;
+            foreach (var provider in providers)
             {
-                builder.OpenComponent(style.index, style.type);
-                builder.CloseComponent();
+                var priority = $"{Environment.NewLine}/* priority: {provider.Priority?.ToString() ?? "default"} source: {provider.GetType().Name} */";
+
+                if (RenderContext.IsServer && RenderContext.IsPreRendering)
+                {
+                    builder.AddContent(index++, new MarkupString(priority));
+                }
+                else
+                {
+                    builder.AddContent(index++, priority);
+                }
+
+                foreach (var style in provider.Styles)
+                {
+                    builder.OpenComponent(index++, style);
+                    builder.CloseComponent();
+                }
             }
 
             builder.CloseElement();

@@ -35,16 +35,20 @@ namespace Skclusive.Core.Component
                 builder.AddElementReferenceCapture(2, elementRef => RootRef.Current = elementRef);
             }
 
-            var scripts = ScriptProviders.SelectMany(provider => provider.Scripts).Distinct();
+            var providers = ScriptProviders.Distinct().OrderByDescending(provider => provider.Priority.HasValue).ThenBy(provider => provider.Priority);
 
             var content = new StringBuilder();
 
-            foreach (var script in scripts)
+            foreach (var provider in providers)
             {
-                var instance = Activator.CreateInstance(script);
-                if (instance is ScriptBase _script)
+                content.AppendLine($"{Environment.NewLine}/* priority: {provider.Priority?.ToString() ?? "default"} source: {provider.GetType().Name} */");
+                foreach (var script in provider.Scripts)
                 {
-                    content.AppendLine(_script.GetScript());
+                    var instance = Activator.CreateInstance(script);
+                    if (instance is ScriptBase _script)
+                    {
+                        content.AppendLine(_script.GetScript());
+                    }
                 }
             }
 

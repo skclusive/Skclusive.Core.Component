@@ -5,11 +5,19 @@ namespace Skclusive.Core.Component
 {
     public class ScriptTypeProvider : IScriptTypeProvider
     {
+        public int? Priority { get; }
+
         public IEnumerable<Type> Scripts { get; }
 
-        public ScriptTypeProvider(params Type [] scripts)
+        public ScriptTypeProvider(int? priority = null, params Type [] scripts)
         {
+            Priority = priority;
+
             Scripts = scripts;
+        }
+
+        public ScriptTypeProvider(params Type [] scripts) : this(priority: default, scripts)
+        {
         }
     }
 }
