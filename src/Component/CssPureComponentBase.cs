@@ -63,7 +63,21 @@ namespace Skclusive.Core.Component
         [Parameter(CaptureUnmatchedValues = true)]
         public Dictionary<string, object> Attributes { get; set; }
 
-        public CssPureComponentBase(string selector = "", bool? disableBinding = true, bool? disableConfigurer = true) : base(disableBinding, disableConfigurer)
+         /// <summary>
+        /// Constructs an instance of <see cref="CssPureComponentBase"/>.
+        /// </summary>
+        public CssPureComponentBase() : this(selector: "")
+        {
+        }
+
+        /// <summary>
+        /// Constructs an instance of <see cref="CssPureComponentBase"/>.
+        /// </summary>
+        public CssPureComponentBase(string selector) : this(selector, disableBinding: true, disableConfigurer: true)
+        {
+        }
+
+        public CssPureComponentBase(string selector, bool? disableBinding, bool? disableConfigurer) : base(disableBinding, disableConfigurer)
         {
             Stamp = GetType().Name + "_" + Guid.NewGuid().ToString();
 

@@ -26,7 +26,17 @@ namespace Skclusive.Core.Component
         [Parameter]
         public RouteData RouteData { get; set; }
 
-        public AuthenticationRouteView(bool? disableBinding = true, bool? disableConfigurer = true) : base(disableBinding, disableConfigurer)
+        /// <summary>
+        /// Constructs an instance of <see cref="AuthenticationRouteView"/>.
+        /// </summary>
+        public AuthenticationRouteView() : this(disableBinding: true, disableConfigurer: true)
+        {
+        }
+
+        /// <summary>
+        /// Constructs an instance of <see cref="AuthenticationRouteView"/>.
+        /// </summary>
+        public AuthenticationRouteView(bool? disableBinding, bool? disableConfigurer) : base(disableBinding, disableConfigurer)
         {
         }
 

@@ -17,7 +17,17 @@ namespace Skclusive.Core.Component
         [Parameter]
         public bool If { set; get; }
 
-        public Condition(bool? disableBinding = true, bool? disableConfigurer = null) : base(disableBinding, disableConfigurer)
+        /// <summary>
+        /// Constructs an instance of <see cref="Condition"/>.
+        /// </summary>
+        public Condition() : this(disableBinding: true, disableConfigurer: null)
+        {
+        }
+
+        /// <summary>
+        /// Constructs an instance of <see cref="Condition"/>.
+        /// </summary>
+        public Condition(bool? disableBinding, bool? disableConfigurer) : base(disableBinding, disableConfigurer)
         {
         }
 

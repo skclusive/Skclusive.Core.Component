@@ -76,7 +76,21 @@ namespace Skclusive.Core.Component
         /// <summary>
         /// Constructs an instance of <see cref="CssComponentBase"/>.
         /// </summary>
-        public CssComponentBase(string selector = "", bool? disableBinding = true, bool? disableConfigurer = true) : base(disableBinding, disableConfigurer)
+        public CssComponentBase() : this(selector: "")
+        {
+        }
+
+        /// <summary>
+        /// Constructs an instance of <see cref="CssComponentBase"/>.
+        /// </summary>
+        public CssComponentBase(string selector) : this(selector, disableBinding: null, disableConfigurer: null)
+        {
+        }
+
+        /// <summary>
+        /// Constructs an instance of <see cref="CssComponentBase"/>.
+        /// </summary>
+        public CssComponentBase(string selector, bool? disableBinding, bool? disableConfigurer) : base(disableBinding, disableConfigurer)
         {
             Stamp = GetType().Name + "_" + Guid.NewGuid().ToString();
 

@@ -12,7 +12,17 @@ namespace Skclusive.Core.Component
         [Parameter]
         public bool AddAttributes { set; get; }
 
-        public Reflected(bool? disableBinding = true, bool? disableConfigurer = true) : base("", disableBinding, disableConfigurer)
+        /// <summary>
+        /// Constructs an instance of <see cref="Reflected"/>.
+        /// </summary>
+        public Reflected() : this(disableBinding: true, disableConfigurer: true)
+        {
+        }
+
+        /// <summary>
+        /// Constructs an instance of <see cref="Reflected"/>.
+        /// </summary>
+        public Reflected(bool? disableBinding, bool? disableConfigurer) : base("", disableBinding, disableConfigurer)
         {
         }
 

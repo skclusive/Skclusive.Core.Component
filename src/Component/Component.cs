@@ -33,7 +33,24 @@ namespace Skclusive.Core.Component
 
         #endregion
 
-        public Component(string selector = "", bool? disableBinding = null, bool? disableConfigurer = null) : base(selector, disableBinding, disableConfigurer)
+        // <summary>
+        /// Constructs an instance of <see cref="Component"/>.
+        /// </summary>
+        public Component() : this(selector: "")
+        {
+        }
+
+        /// <summary>
+        /// Constructs an instance of <see cref="Component"/>.
+        /// </summary>
+        public Component(string selector) : this(selector, disableBinding: null, disableConfigurer: null)
+        {
+        }
+
+        /// <summary>
+        /// Constructs an instance of <see cref="Component"/>.
+        /// </summary>
+        public Component(string selector, bool? disableBinding, bool? disableConfigurer) : base(selector, disableBinding, disableConfigurer)
         {
         }
 
